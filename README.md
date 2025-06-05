@@ -1,5 +1,5 @@
 # Image Style Transfer CycleGAN for Photo to Monet Transformation
-Explores artistic style transfer using CycleGAN to convert photographs into Monet-style paintings. CycleGAN, a type of Generative Adversarial Network (GAN), was employed to learn the mapping between the two unpaired image domains: real-world photos and Monet paintings. The model was trained to generate visually convincing Monet-style renditions from input photographs. Evaluation metrics such as FID (Fréchet Inception Distance), SSIM (Structural Similarity Index), and PSNR (Peak Signal-to-Noise Ratio) were used to assess the quality and realism of generated images.
+Explores artistic style transfer using CycleGAN to convert photographs into Monet-style paintings. CycleGAN, a type of Generative Adversarial Network (GAN), was employed to learn the mapping between the two unpaired image domains: real-world photos and Monet paintings. The model was trained to generate visually convincing Monet-style renditions from input photographs. The quality and realism of the generated images were evaluated using the Structural Similarity Index (SSIM), which measures the perceived similarity between the original and stylized images based on structural information.
 
 # Introduction
 The transformation of photographs into artistic styles presents significant opportunities in the fields of art, design, and AI-driven creativity. This research aims to implement a CycleGAN model to transform photos into Monet-style artworks using the publicly available "Photo-to-Monet" dataset from the Kaggle or TensorFlow datasets. Two main components of the model are:
@@ -33,6 +33,21 @@ The transformation of photographs into artistic styles presents significant oppo
 - Identity Loss: Ensures color and structure consistency when input is already in the target domain
 - Combines L1 and L2 losses for more balanced optimization
 
+# Training and Evaluation
+- Platform : Training was conducted using Jupyter Notebook.
+- Training Duration : 50 epochs
+- Batch Size : 8
+- Optimizer : Adam with learning rate decay schedule
+- Evaluation Metric : Structural Similarity Index (SSIM)
+
+## The CycleGAN model was trained using a custom training loop that included:
+- Generator and Discriminator Architectures : Custom-built using TensorFlow and TensorFlow Addons (InstanceNormalization), with 8 downsampling layers, residual blocks, and 7 upsampling layers for the generators.
+- Loss Functions : Generator and discriminator losses were calculated using binary cross-entropy. Additional components such as cycle consistency loss (a combination of L1 and L2 loss) and identity loss were incorporated to stabilize training and preserve content.
+- Gradient Updates : Training was distributed using tf.distribute.MirroredStrategy to leverage multiple GPUs, with manual gradient computation and application.
+- Preprocessing : Input images (256×256×3) were normalized to [-1, 1] and loaded into TensorFlow Datasets with caching, shuffling, batching, and prefetching.
+- Loss Tracking : Average generator and discriminator losses for both Monet and Photo domains were recorded per epoch for post-training analysis.
+
+The final model outputs were evaluated visually and quantitatively using SSIM, indicating the structural similarity between generated and real images. This metric was chosen for its sensitivity to changes in image structure, which aligns with the goal of stylistic transfer while preserving content.
 
 # Technologies and Tools
 - Language : Python
