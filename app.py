@@ -53,11 +53,11 @@ if uploaded_file:
 
     with col1:
         st.markdown("<h5 style='text-align:center;'>📷 Original Photo</h5>", unsafe_allow_html=True)
-        st.image(user_display, use_column_width=True)
+        st.image(user_display, use_container_width=True)
 
     with col2:
         st.markdown("<h5 style='text-align:center;'>🎨 Monet Style Photo</h5>", unsafe_allow_html=True)
-        st.image(generated_display, use_column_width=True)
+        st.image(generated_display, use_container_width=True)
 
     st.sidebar.success("Styled image generated!")
     st.sidebar.download_button(
@@ -72,13 +72,13 @@ else:
     with col1:
         st.markdown("<h5 style='text-align:center;'>📷 Contoh Gambar</h5>", unsafe_allow_html=True)
         if sample_original:
-            st.image(sample_original, caption="Original Sample", use_column_width=True)
+            st.image(sample_original, caption="Original Sample", use_container_width=True)
         else:
             st.warning("Contoh gambar tidak ditemukan")
 
     with col2:
         st.markdown("<h5 style='text-align:center;'>🎨 Hasil Monet</h5>", unsafe_allow_html=True)
         if sample_monet:
-            st.image(sample_monet, caption="Monet-style Sample", use_column_width=True)
+            st.image(sample_monet, caption="Monet-style Sample", use_container_width=True)
         else:
             st.warning("Contoh Monet-style tidak ditemukan")
