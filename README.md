@@ -7,10 +7,18 @@ Artistic style transfer has garnered significant interest in both creative indus
 # Methodology
 ## Data Preparation
 - **Dataset :** Approximately 7,338 images, equally divided between photos and Monet paintings.
+- **Storage Format:** TFRecord format.
 - **Preprocessing :**
     - Resizing to 256x256 pixels
     - Normalizing pixel values to [-1, 1]
     - Augmentation: horizontal flips, random cropping for variability
+  
+## Data Pipeline
+- Implemented using `tf.data.TFRecordDataset` with:
+    - Parsing functions for decoding and normalization
+    - AUTOTUNE for performance optimization
+    - Shuffling, batching, and prefetching
+- Data loaded from two directories: monet_tfrec and photo_tfrec
 
 ## Model Architecture
 ### Generator (Photo → Monet / Monet → Photo)
@@ -35,20 +43,24 @@ Artistic style transfer has garnered significant interest in both creative indus
 - Combined using weighted sum of L1 and L2 losses
 
 # Training and Evaluation
-- **Platform** : Training was conducted using Jupyter Notebook.
-- **Epochs** : 65 epochs
-- **Batch Size** : 1
-- **Optimizer** : Adam with Cosine Decay Restarts as learning rate schedule
-- **Evaluation Metric** : Structural Similarity Index (SSIM)
+- **Platform :** Training was conducted using Jupyter Notebook.
+- **Epochs :** 65 epochs
+- **Batch Size :** 1
+- **Strategy :** `tf.distribute.MirroredStrategy` with multi-GPU support
+- **Gradient Updates :** Manual application via `tf.GradientTape`
+- **Optimizer :** Adam (β₁ = 0.5, `clipnorm=1.0`)
+- **Learning Rate Schedule :** `CosineDecayRestarts`
+- **Evaluation Metric :** Structural Similarity Index (SSIM)
 
 # Technologies and Tools
-- **Language** : Python
-- **Framework** : TensorFlow, Keras
-- **Libraries** : TensorFlow Addons (InstanceNormalization), NumPy, OpenCV, Matplotlib, PIL, Scikit-Image
-- **Environment** : Jupyter Notebook
+- **Language :** Python
+- **Framework :** TensorFlow, Keras
+- **Libraries :** TensorFlow Addons (InstanceNormalization), NumPy, OpenCV, Matplotlib, PIL, Scikit-Image
+- **Hardware :** GPU-enabled machine
+- **Environment :** Jupyter Notebook
 
 # Conclusion
-CycleGAN effectively translated real-world photographs into Monet-style paintings without needing paired data. The model preserved structural content while successfully applying artistic textures. Although the results were visually compelling, further improvements are needed in texture clarity and structural fidelity.
+The CycleGAN model trained with unpaired TFRecord datasets successfully learned to generate Monet-style paintings from real-world photos. The combination of instance normalization, residual blocks, and SSIM-enhanced cycle loss helped maintain both artistic quality and structural integrity. Training using a custom loop enabled fine-grained control over optimization and loss computation.
 
 # Recommendations
 - Integrate self-attention or attention-gated modules to enhance texture detail
