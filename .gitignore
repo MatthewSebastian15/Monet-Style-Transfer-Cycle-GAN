@@ -1,0 +1,4 @@
+App/pycache/
+Data/Raw/
+Notebooks/**/.ipynb_checkpoints/
+Model/Trained/*.h5

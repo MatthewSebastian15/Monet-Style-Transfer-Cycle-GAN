@@ -1,0 +1,6 @@
+streamlit
+tensorflow==2.15.0
+tensorflow-addons==0.22.0
+protobuf==3.20.3
+Pillow
+numpy
